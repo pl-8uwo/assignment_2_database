@@ -1,0 +1,20 @@
+USE plewis8assign2db;
+
+DELETE FROM doctor WHERE dateLicensed<'1965-1-1';
+
+CREATE VIEW pat_of_heads AS SELECT patient.fName AS 'Patient First Name', patient.lName AS 'Patient Last Name', doctor.lName AS 'Doctor Last Name', hName AS 'Hospital Name' FROM patient, doctor, doctor_has_patient AS dhp, hospital WHERE headDocLicense=doctor.license AND startDate>'1995-12-31' AND doctor.license=dhp.license AND dhp.ohipNum=patient.ohipNum;
+
+SELECT * FROM pat_of_heads;
+
+SELECT * FROM doctor;
+
+SELECT * FROM doctor_has_patient;
+
+DELETE FROM doctor WHERE lName='Clooney';
+
+SELECT * FROM doctor_has_patient;
+
+SELECT * FROM doctor;
+
+DELETE FROM doctor WHERE speciality='Surgeon';
+

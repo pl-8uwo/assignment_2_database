@@ -1,0 +1,59 @@
+SHOW DATABASES;
+
+DROP DATABASE IF EXISTS plewis8assign2db;
+CREATE DATABASE plewis8assign2db;
+USE plewis8assign2db;
+
+#grants ta usage
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON yourwesternuseridassign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW TABLES;
+
+CREATE TABLE patient 
+(
+ohipNum char(9), 
+fName char(20), 
+lName char(20),
+PRIMARY KEY (ohipNum)
+);
+
+CREATE TABLE doctor
+(
+license char(4) PRIMARY KEY,
+fName char(20),
+lName char(20),
+speciality char(30),
+dateLicensed date,
+ohipHCode char(3)
+);
+
+CREATE TABLE hospital
+(
+ohipHCode char(3) PRIMARY KEY,
+hName char(20),
+city char(20),
+province char(2),
+numBeds int,
+headDocLicense char(4),
+startDate date);
+
+CREATE TABLE doctor_has_patient
+(
+ohipNum char(9),
+license char(4),
+FOREIGN KEY (ohipNUM) REFERENCES patient(ohipNum),
+FOREIGN KEY (license) REFERENCES doctor(license) ON DELETE CASCADE,
+PRIMARY KEY (ohipNum, license));
+
+
+#alters both doctor and hospital tables to have their foreign keys setup properly
+ALTER TABLE doctor ADD CONSTRAINT FOREIGN KEY (ohipHCode) REFERENCES hospital(ohipHCode);
+ALTER TABLE hospital ADD CONSTRAINT FOREIGN KEY (headDocLicense) REFERENCES doctor(license) ON DELETE RESTRICT;
+
+
+  	
+SHOW TABLES;

@@ -1,0 +1,147 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SHOW DATABASES
+--------------
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| flipClass          |
+| myfirst            |
+| mysql              |
+| performance_schema |
+| plewis8assign2db   |
+| vetoffice          |
++--------------------+
+7 rows in set (0.00 sec)
+
+--------------
+DROP DATABASE IF EXISTS plewis8assign2db
+--------------
+
+Query OK, 5 rows affected (0.26 sec)
+
+--------------
+CREATE DATABASE plewis8assign2db
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+GRANT ALL PRIVILEGES ON yourwesternuseridassign2db.* TO 'ta'@'localhost'
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+--------------
+SHOW TABLES
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+CREATE TABLE patient 
+(
+ohipNum char(9), 
+fName char(20), 
+lName char(20),
+PRIMARY KEY (ohipNum)
+)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+CREATE TABLE doctor
+(
+license char(4) PRIMARY KEY,
+fName char(20),
+lName char(20),
+speciality char(30),
+dateLicensed date,
+ohipHCode char(3)
+)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+CREATE TABLE hospital
+(
+ohipHCode char(3) PRIMARY KEY,
+hName char(20),
+city char(20),
+province char(2),
+numBeds int,
+headDocLicense char(4),
+startDate date)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+CREATE TABLE doctor_has_patient
+(
+ohipNum char(9),
+license char(4),
+FOREIGN KEY (ohipNUM) REFERENCES patient(ohipNum),
+FOREIGN KEY (license) REFERENCES doctor(license) ON DELETE CASCADE,
+PRIMARY KEY (ohipNum, license))
+--------------
+
+Query OK, 0 rows affected (0.12 sec)
+
+--------------
+ALTER TABLE doctor ADD CONSTRAINT FOREIGN KEY (ohipHCode) REFERENCES hospital(ohipHCode)
+--------------
+
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+ALTER TABLE hospital ADD CONSTRAINT FOREIGN KEY (headDocLicense) REFERENCES doctor(license) ON DELETE RESTRICT
+--------------
+
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+SHOW TABLES
+--------------
+
++----------------------------+
+| Tables_in_plewis8assign2db |
++----------------------------+
+| doctor                     |
+| doctor_has_patient         |
+| hospital                   |
+| patient                    |
++----------------------------+
+4 rows in set (0.00 sec)
+
+Bye

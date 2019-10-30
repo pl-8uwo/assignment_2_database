@@ -1,0 +1,42 @@
+USE plewis8assign2db;
+
+#1
+SELECT lName FROM patient;
+
+#2
+SELECT DISTINCT lName FROM patient;
+
+#3
+SELECT * FROM doctor ORDER BY lName ASC;
+
+#4
+SELECT hName, ohipHCode FROM hospital WHERE numBeds>1500;
+
+#5
+SELECT lName, fName FROM doctor WHERE ohipHCode=(SELECT ohipHCode FROM hospital WHERE hName='St. Joseph');
+	
+#6
+SELECT fName, lName FROM patient WHERE lName LIKE 'G%';
+
+#7
+SELECT patient.fName, patient.lName FROM patient, doctor_has_patient, doctor WHERE patient.ohipNum=doctor_has_patient.ohipNum AND doctor.license=doctor_has_patient.license AND doctor.lName='Clooney'; 
+
+#8
+SELECT hName, city, lName FROM hospital, doctor WHERE headDocLicense=license; 
+ 
+#9
+SELECT SUM(numBeds) AS 'Total Number of Beds' FROM hospital;
+
+#10
+SELECT patient.fName, doctor.fName FROM patient, doctor, hospital, doctor_has_patient WHERE headDocLicense=doctor.license AND doctor.license=doctor_has_patient.license AND doctor_has_patient.ohipNum=patient.ohipNum;
+
+#11
+SELECT fName, lName FROM hospital, doctor WHERE doctor.ohipHCode=hospital.ohipHCode AND speciality='Surgeon' AND hName='Victoria';
+
+#12
+SELECT fName FROM doctor WHERE license NOT IN (SELECT license
+ FROM doctor_has_patient);
+
+#13
+SELECT fName, lName FROM doctor, doctor_has_patient AS dhp WHERE doctor.license=dhp.license GROUP BY dhp.license HAVING COUNT(dhp.license) > 1;
+ 
